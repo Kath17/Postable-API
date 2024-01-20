@@ -5,7 +5,7 @@ export const up: Migration = async (params) => {
     id SERIAL PRIMARY KEY,
     postId INT NOT NULL,
     userId INT NOT NULL,
-    createdAt TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    createdAt VARCHAR(50) NOT NULL,
     FOREIGN KEY (postId) REFERENCES posts(id),
     FOREIGN KEY (userId) REFERENCES users(id)
 );`);

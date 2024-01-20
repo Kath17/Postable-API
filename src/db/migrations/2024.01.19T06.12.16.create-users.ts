@@ -9,8 +9,8 @@ export const up: Migration = async (params) => {
     firstName VARCHAR(50),
     lastName VARCHAR(50),
     role VARCHAR(10) NOT NULL DEFAULT 'user',
-    createdAt TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updatedAt TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+    createdAt VARCHAR(50) NOT NULL,
+    updatedAt VARCHAR(50) NOT NULL
     CONSTRAINT chk_role CHECK (role IN ('user', 'admin'))
 );
 `);
