@@ -2,9 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { PostableError } from "../middlewares/error.middleware";
-import { createUser, getUserByUsername } from "../services/user.service";
-import { User } from "../models/user.model";
 import { getDate } from "../utils/getDate";
+import { createUser, getUserByUsername } from "../services/user-auth.service";
 
 const jwtSecret = "ultra-secret";
 
@@ -52,14 +51,10 @@ const signUpController = async (
 
     newUser = await createUser(newUser);
 
-    const dataUser: Partial<User> = { ...newUser };
-    delete dataUser.password;
-    delete dataUser.role;
-
     res.status(201).json({
       ok: true,
       message: "Register successful",
-      data: dataUser,
+      data: newUser,
     });
   } catch (error) {
     next(error);
