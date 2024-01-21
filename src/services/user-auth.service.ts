@@ -7,7 +7,7 @@ export async function getUserByUsername(name: string): Promise<User> {
   try {
     const user = await userAuthDB.getUserByUsername(name);
     if (!user)
-      throw new PostableError("User doesn't exists", 403, "Error at service");
+      throw new PostableError("User doesn't exist", 403, "Error at service");
 
     return user;
   } catch (error) {

@@ -6,7 +6,7 @@ export async function getUserProfileById(id: string): Promise<User> {
   try {
     const user = await userProfileDB.getUserProfileById(id);
     if (!user)
-      throw new PostableError("User doesn't exists", 403, "Error at service");
+      throw new PostableError("User doesn't exist", 403, "Error at service");
 
     return user;
   } catch (error) {
@@ -21,7 +21,7 @@ export async function updateUserProfile(
   try {
     const user = await userProfileDB.getUserProfileById(id);
     if (!user)
-      throw new PostableError("User doesn't exists", 403, "Error at service");
+      throw new PostableError("User doesn't exist", 403, "Error at service");
 
     return await userProfileDB.updateUserProfile(data, id);
   } catch (error) {
@@ -33,7 +33,7 @@ export async function deleteUserProfile(id: string): Promise<User> {
   try {
     const user = await userProfileDB.getUserProfileById(id);
     if (!user)
-      throw new PostableError("User doesn't exists", 403, "Error at service");
+      throw new PostableError("User doesn't exist", 403, "Error at service");
 
     return await userProfileDB.deleteUserProfile(id);
   } catch (error) {

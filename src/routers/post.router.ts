@@ -2,7 +2,7 @@ import { Router } from "express";
 import {
   createPostController,
   deleteLikeFromPost,
-  getPostsByUser,
+  getPostsByUsernameController,
   getPostsController,
   giveLikeToPost,
   updatePost,
@@ -14,7 +14,7 @@ import { ValidateRequestMiddleware } from "../middlewares/validation.middleware"
 export const postRouter = Router();
 
 postRouter.get("/", getPostsController);
-postRouter.get("/:username", getPostsByUser);
+postRouter.get("/:username", getPostsByUsernameController);
 postRouter.post(
   "/posts",
   authenticateHandler,
