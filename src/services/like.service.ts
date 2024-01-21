@@ -21,6 +21,25 @@ export async function giveLike(
   }
 }
 
+export async function dislike(
+  postId: string,
+  userId: string
+): Promise<Boolean> {
+  try {
+    const post = await postDB.getPostById(postId);
+    if (!post)
+      throw new PostableError("Post doesn't exist", 404, "Error at service");
+
+    const like = await getLikeByIds(userId, postId);
+    if (!like)
+      throw new PostableError("Post had no like", 403, "Service Error");
+
+    return await likeDB.dislike(postId, userId);
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function getLikeByIds(userId: string, postId: string) {
   try {
     return await likeDB.getLikeByIds(userId, postId);

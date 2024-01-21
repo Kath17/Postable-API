@@ -17,6 +17,21 @@ export async function giveLike(
   }
 }
 
+export async function dislike(
+  postId: string,
+  userId: string
+): Promise<boolean> {
+  try {
+    await query(`DELETE FROM likes WHERE postId = $1 AND userId = $2;`, [
+      postId,
+      userId,
+    ]);
+    return true;
+  } catch (error) {
+    throw new PostableError("Couldn't be disliked", 403, "Data Error", error);
+  }
+}
+
 export async function getLikeByIds(userId: string, postId: string) {
   try {
     return (

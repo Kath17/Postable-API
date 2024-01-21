@@ -68,12 +68,23 @@ export async function updatePost(data: PostParams, postId: string) {
 
 export async function updateLikeInPost(postId: string): Promise<Post> {
   try {
-    const post = await getPostById(postId);
-    if (!post) throw new PostableError("Post doesn't exist", 404, "Data error");
-
     return (
       await query(
         `UPDATE posts SET likesCount = likesCount + 1, updatedAt = $1 WHERE id = $2
+         RETURNING id, content, createdAt, updatedAt, likesCount;`,
+        [getDate(), postId]
+      )
+    ).rows[0];
+  } catch (error) {
+    throw new PostableError("Couldn't give like", 403, "Data error", error);
+  }
+}
+
+export async function updateDislikeInPost(postId: string): Promise<Post> {
+  try {
+    return (
+      await query(
+        `UPDATE posts SET likesCount = likesCount - 1, updatedAt = $1 WHERE id = $2
          RETURNING id, content, createdAt, updatedAt, likesCount;`,
         [getDate(), postId]
       )

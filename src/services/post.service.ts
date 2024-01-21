@@ -54,6 +54,17 @@ export async function updateLikeInPost(postId: string): Promise<Post> {
   }
 }
 
+export async function updateDislikeInPost(postId: string): Promise<Post> {
+  try {
+    const post = await postDB.getPostById(postId);
+    if (!post)
+      throw new PostableError("Post doesn't exist", 404, "Error at service");
+    return await postDB.updateDislikeInPost(postId);
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function getPostsCount(
   filters: PostFilters = {}
 ): Promise<number> {
