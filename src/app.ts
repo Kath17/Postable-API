@@ -5,6 +5,7 @@ import { authRouter } from "./routers/user-auth.router";
 import { postRouter } from "./routers/post.router";
 import errorHandler from "./middlewares/error.middleware";
 import { userProfileRouter } from "./routers/user-profile.router";
+import likesRouter from "./routers/like.router";
 
 if (process.env["NODE_ENV"] === "test") {
   configDotenv({ path: ".env.test" });
@@ -22,5 +23,6 @@ app.use(authRouter);
 app.use("/users", userRouter);
 app.use("/me", userProfileRouter);
 app.use(postRouter);
+app.use("/posts", likesRouter);
 
 app.use(errorHandler);

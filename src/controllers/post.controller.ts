@@ -130,9 +130,9 @@ export async function updatePostController(
     const { id } = req.params;
     const post = await getPostById(id);
 
-    if (!post)
+    if (!post) {
       throw new PostableError("Post doesn't exist", 404, "Error at controller");
-    else {
+    } else {
       if (userId !== post.userid)
         throw new PostableError("Not authorized", 401, "Error at controller");
 
