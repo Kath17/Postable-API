@@ -9,10 +9,8 @@ import likesRouter from "./routers/like.router";
 
 if (process.env["NODE_ENV"] === "test") {
   configDotenv({ path: ".env.test" });
-  console.log("auth: ", "test");
 } else {
   configDotenv();
-  console.log(process.env["PGDATABASE"]);
 }
 
 export const app = express();

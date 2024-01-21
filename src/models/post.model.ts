@@ -34,5 +34,5 @@ export type Post = PostParams & {
 };
 
 export type PostFilters = {
-  "posts.userId"?: string;
+  "posts.userid"?: string;
 };

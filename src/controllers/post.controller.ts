@@ -25,7 +25,7 @@ export async function getPostsController(
       ).id.toString();
     }
     const filters: PostFilters = {
-      "posts.userId": userId,
+      "posts.userid": userId,
     };
     const page = Number(req.query["page"]) || 1;
     const limit = Number(req.query["limit"]) || 10;
@@ -69,7 +69,7 @@ export async function getPostsByUsernameController(
       throw new PostableError("User doesn't exist", 403, "Error at service");
 
     let filters: PostFilters = {
-      "posts.userId": userId.toString(),
+      "posts.userid": userId.toString(),
     };
 
     const page = Number(req.query["page"]) || 1;

@@ -18,7 +18,6 @@ export async function getUserByUsername(name: string): Promise<User> {
 export async function createUser(data: UserParams): Promise<User> {
   const { username } = data;
   try {
-    console.log("ENTRA A CREATE SERVICE");
     const user = await userAuthDB.getUserByUsername(username);
     if (user)
       throw new PostableError("Username already exists", 403, "Service Error");

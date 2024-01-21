@@ -18,7 +18,6 @@ export const authenticateHandler = async (
   next: NextFunction
 ) => {
   const token = req.headers.authorization?.split(" ")[1] || "";
-  console.log("Token: ", token);
   if (!token) throw new PostableError("Unauthorized", 401, "AuthHandler error");
   try {
     const payload = jwt.verify(token, jwtSecret) as {
@@ -41,7 +40,6 @@ export const adminAuthorizacion = async (
   next: NextFunction
 ) => {
   try {
-    console.log(req.userRole);
     if (req.userRole === "admin") {
       next();
     } else {

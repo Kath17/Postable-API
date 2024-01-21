@@ -14,14 +14,10 @@ export async function getUserByUsername(username: string): Promise<User> {
 }
 
 export async function createUser(data: UserParams): Promise<User> {
-  console.log("ENTRA A CREATE DATA");
-
   const keys = Object.keys(data);
   const indices = keys.map((_, index) => `$${index + 1}`).join(",");
   const columns = keys.join(",");
   const values = Object.values(data);
-
-  console.log(" -> ", data);
 
   try {
     return (

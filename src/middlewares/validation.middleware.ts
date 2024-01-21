@@ -6,7 +6,6 @@ export function ValidateRequestMiddleware(schema: Schema) {
     try {
       const body = schema.parse(req.body);
       req.body = body;
-      console.log("body: ", body);
       next();
     } catch (error) {
       next(error);

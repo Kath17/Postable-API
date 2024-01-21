@@ -15,7 +15,7 @@ export async function getPosts(
     const queryParams: (string | boolean | number)[] = [];
 
     let myQuery = `SELECT id, content, createdat, updatedat FROM posts`;
-    if (filters["posts.userId"])
+    if (filters["posts.userid"])
       myQuery = `SELECT posts.id, posts.content, posts.createdat, 
                         posts.updatedat, users.username, posts.likesCount
                  FROM posts JOIN users ON posts.userid = users.id`;
@@ -30,8 +30,6 @@ export async function getPosts(
       const offset = (page - 1) * limit;
       myQuery += ` LIMIT ${limit} OFFSET ${offset};`;
     }
-    console.log("myQuery: ", myQuery);
-    console.log("queryParams: ", queryParams);
 
     const result = await query(myQuery, queryParams);
     return result.rows;
@@ -120,8 +118,6 @@ export async function createPost(
     const indices = keys.map((_, index) => `$${index + 1}`).join(",");
     const columns = keys.join(",");
     const values = Object.values(data);
-
-    console.log(" -> ", data);
 
     return (
       await query(
