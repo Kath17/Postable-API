@@ -19,7 +19,6 @@ export const query = async (
   text: string,
   params?: (string | number | boolean)[]
 ) => {
-  // console.log(text, params);
   const results = await pool.query(text, params);
   return results;
 };

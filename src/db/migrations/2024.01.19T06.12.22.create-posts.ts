@@ -7,6 +7,7 @@ export const up: Migration = async (params) => {
     content TEXT NOT NULL,
     createdAt VARCHAR(50) NOT NULL,
     updatedAt VARCHAR(50) NOT NULL,
+    likesCount INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY (userId) REFERENCES users(id)
 );`);
 };
