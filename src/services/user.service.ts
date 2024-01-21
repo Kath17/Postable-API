@@ -8,3 +8,11 @@ export async function getUsers(): Promise<User[]> {
     throw error;
   }
 }
+
+export async function getUserById(id: number): Promise<User> {
+  try {
+    return await userDB.getUserById(id);
+  } catch (error) {
+    throw error;
+  }
+}

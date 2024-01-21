@@ -1,9 +1,16 @@
 import { NextFunction, Request, Response } from "express";
-import { createPost, getPosts, getPostsCount } from "../services/post.service";
-import { PostFilters } from "../models/post.model";
+import {
+  createPost,
+  getPostById,
+  getPosts,
+  getPostsCount,
+  updatePost,
+} from "../services/post.service";
+import { Post, PostFilters } from "../models/post.model";
 import { getUserByUsername } from "../services/user-auth.service";
 import { getDate } from "../utils/getDate";
 import { PostableError } from "../middlewares/error.middleware";
+import { getUserById } from "../services/user.service";
 
 export async function getPostsController(
   req: Request,
@@ -113,20 +120,33 @@ export async function createPostController(
   }
 }
 
-export async function giveLikeToPost(
+export async function updatePostController(
   req: Request,
   res: Response,
   next: NextFunction
-) {}
+) {
+  try {
+    const userId = req.userId as number;
+    const { id } = req.params;
+    const post = await getPostById(id);
 
-export async function updatePost(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {}
+    if (!post)
+      throw new PostableError("Post doesn't exist", 404, "Error at controller");
+    else {
+      if (userId !== post.userid)
+        throw new PostableError("Not authorized", 401, "Error at controller");
 
-export async function deleteLikeFromPost(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {}
+      const postBody = req.body;
+      if (Object.entries(postBody).length === 0)
+        throw new PostableError("There's no body", 400, "Error at controller");
+
+      const updatedPost: Post = await updatePost(postBody, id);
+      const username = (await getUserById(post.userid)).username;
+      res
+        .status(200)
+        .json({ ok: true, data: { ...updatedPost, username: username } });
+    }
+  } catch (error) {
+    next(error);
+  }
+}

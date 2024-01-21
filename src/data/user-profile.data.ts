@@ -24,6 +24,7 @@ export async function updateUserProfile(
   try {
     data.updatedAt = getDate();
     const stringifyObject = StringifyObject(data);
+
     return (
       await query(
         `UPDATE users SET ${stringifyObject}

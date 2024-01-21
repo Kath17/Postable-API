@@ -11,8 +11,33 @@ export async function getPosts(
   try {
     const posts = await postDB.getPosts(filters, sort, page, limit);
     if (!posts)
-      throw new PostableError("There aren't posts", 403, "Error at service");
+      throw new PostableError("There aren't posts", 404, "Error at service");
     return posts;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getPostById(id: string): Promise<Post> {
+  try {
+    const post = await postDB.getPostById(id);
+    if (!post)
+      throw new PostableError("Post doesn't exist", 404, "Error at service");
+    return post;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function updatePost(
+  data: PostParams,
+  postId: string
+): Promise<Post> {
+  try {
+    const post = await postDB.getPostById(postId);
+    if (!post)
+      throw new PostableError("Post doesn't exist", 404, "Error at service");
+    return await postDB.updatePost(data, postId);
   } catch (error) {
     throw error;
   }
@@ -24,7 +49,7 @@ export async function getPostsCount(
   try {
     const countOfPosts = await postDB.getPostsCount(filters);
     if (!countOfPosts)
-      throw new PostableError("There aren't posts", 403, "Error at service");
+      throw new PostableError("There aren't posts", 404, "Error at service");
     return countOfPosts;
   } catch (error) {
     throw error;

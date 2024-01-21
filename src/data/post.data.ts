@@ -1,7 +1,9 @@
 import { query } from "../db";
 import { PostableError } from "../middlewares/error.middleware";
 import { Post, PostFilters, PostParams } from "../models/post.model";
+import { getDate } from "../utils/getDate";
 import { filtering, sorting } from "../utils/postFilters";
+import { StringifyObject } from "../utils/stringifyObject.utils";
 
 export async function getPosts(
   filters: PostFilters = {},
@@ -15,8 +17,8 @@ export async function getPosts(
     let myQuery = `SELECT id, content, createdat, updatedat FROM posts`;
     if (filters["posts.userId"])
       myQuery = `SELECT posts.id, posts.content, posts.createdat, 
-                      posts.updatedat, users.username, posts.likesCount
-               FROM posts JOIN users ON posts.userid = users.id`;
+                        posts.updatedat, users.username, posts.likesCount
+                 FROM posts JOIN users ON posts.userid = users.id`;
 
     // Filtering
     myQuery = filtering(myQuery, filters, queryParams);
@@ -35,6 +37,32 @@ export async function getPosts(
     return result.rows;
   } catch (error) {
     throw new PostableError("Couldn't get posts", 403, "Data error", error);
+  }
+}
+
+export async function getPostById(id: string) {
+  try {
+    return (await query("SELECT * FROM posts WHERE id = $1", [id])).rows[0];
+  } catch (error) {
+    throw new PostableError("Couldn't get post", 403, "Data Error", error);
+  }
+}
+
+export async function updatePost(data: PostParams, postId: string) {
+  try {
+    data.updatedAt = getDate();
+    const stringifyObject = StringifyObject(data);
+
+    return (
+      await query(
+        `UPDATE posts SET ${stringifyObject} WHERE id = $1
+         RETURNING id,content,createdat,updatedat,likesCount;
+      `,
+        [postId]
+      )
+    ).rows[0];
+  } catch (error) {
+    throw new PostableError("Couldn't update post", 403, "Data error", error);
   }
 }
 
@@ -59,7 +87,7 @@ export async function createPost(
   userId: number
 ): Promise<Post> {
   try {
-    data.userId = userId;
+    data.userid = userId;
     const keys = Object.keys(data);
     const indices = keys.map((_, index) => `$${index + 1}`).join(",");
     const columns = keys.join(",");

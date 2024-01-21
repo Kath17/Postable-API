@@ -1,11 +1,9 @@
 import { Router } from "express";
 import {
   createPostController,
-  deleteLikeFromPost,
   getPostsByUsernameController,
   getPostsController,
-  giveLikeToPost,
-  updatePost,
+  updatePostController,
 } from "../controllers/post.controller";
 import { authenticateHandler } from "../middlewares/user-auth.middleware";
 import { postSchema } from "../models/post.model";
@@ -21,8 +19,11 @@ postRouter.post(
   ValidateRequestMiddleware(postSchema),
   createPostController
 );
-postRouter.post("/posts/:postId/like", giveLikeToPost);
-postRouter.patch("/posts/:id", updatePost); //
-postRouter.delete("/posts/:postId/like", deleteLikeFromPost);
+postRouter.patch(
+  "/posts/:id",
+  authenticateHandler,
+  ValidateRequestMiddleware(postSchema),
+  updatePostController
+);
 
 export default postRouter;
