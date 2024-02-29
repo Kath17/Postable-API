@@ -14,7 +14,7 @@ Se estará usando base de Datos en PostgreSQL. Se necesita:
 ### 1. En tu terminal:
 
 ```
-git clone git@github.com:codeableorg/postable-api-Kath17.git
+git clone git@github.com:Kath17/Postable-API.git
 ```
 
 ### 2. Instalar dependencias:
